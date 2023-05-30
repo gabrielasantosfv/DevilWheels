@@ -22,6 +22,13 @@ public class MotorCarreteras : MonoBehaviour
         juegoTerminado = false;
     }
 
+    void InicioJuego()
+    {
+        CreaCalles();
+        SpeedCarretera();
+        cuentaRegresivaTermino= false;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -35,7 +42,24 @@ public class MotorCarreteras : MonoBehaviour
     public void CreaCalles()
     {
         numSelectorDeCalle = Random.Range(0, 5);
-        GameObject Calle = (GameObject).Instantiante(contadorCalles, [numSelectorDeCalle], new Vector3(0, 50, 0), transform.rotation);
+
+        GameObject Calle = (GameObject)Instantiate(contenedorCalles[numSelectorDeCalle],
+            new Vector3(0, 50, 0),
+            transform.rotation);
+        
+        Calle.SetActive(true);
+        contadorCalles++;
+        Calle.name = "Calle" + contadorCalles;
+        Calle.transform.parent = motorCarreteras.transform;
+
+        GameObject piezaAux = GameObject.Find("Calle" + (contadorCalles - 1));
+
+        Calle.transform.position = new Vector3(transform.position.x,
+            piezaAux.GetComponent<Renderer>().bounds.size.y +
+            piezaAux.transform.position.y,
+
+            piezaAux.transform.position.z
+            );
     }
 
     public void SpeedStop()
@@ -43,7 +67,7 @@ public class MotorCarreteras : MonoBehaviour
         speed = 0;
     }
 
-    public void SpeedArcen() 
+    public void SpeedArcen()
     {
         speed = 5;
     }
